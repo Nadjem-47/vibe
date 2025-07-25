@@ -11,7 +11,7 @@
 # const sandbox = await Sandbox.create('vibe-nextjs-test-NDN')
 
 team_id = "ccb98de1-b952-4d70-804b-05249cb72e85"
-start_cmd = "compile_page.sh"
+start_cmd = "/compile_page.sh"
 dockerfile = "e2b.Dockerfile"
 template_name = "vibe-nextjs-test-NDN"
 template_id = "we90fg5acznuawo68m6d"
