@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useTRPC } from "@/trpc/client"
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useMutation } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -17,7 +17,8 @@ export default function Home() {
     trpc.projects.create.mutationOptions({
       onError: (err) => toast.error(err.message),
       onSuccess: (data) => {
-        router.push(`/projects/${data.id}`)
+        setInput("");
+        router.push(`/projects/${data.id}`);
       },
     })
   )
