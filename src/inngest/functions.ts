@@ -179,6 +179,7 @@ export const agentKit = inngest.createFunction(
         console.error("Error in LLM result:", result.state.data.summary)
         return await prisma.message.create({
           data: {
+            projectId: event.data.projectId,
             content: "Something went wrong please try again",
             role: "ASSISTANT",
             type: "ERROR",
@@ -188,6 +189,7 @@ export const agentKit = inngest.createFunction(
 
       return await prisma.message.create({
         data: {
+          projectId: event.data.projectId,
           content: "LLM RESULT",
           role: "ASSISTANT",
           type: "RESULT",
