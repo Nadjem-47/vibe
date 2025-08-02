@@ -18,7 +18,7 @@ export const messagesRouter = createTRPCRouter({
                 {
                     where: { projectId: input.projectId },
                     orderBy: { createdAt: "asc" },
-                    include: { fragments: true }
+                    include: { fragment: true }
                 }
             );
         }),

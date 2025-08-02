@@ -193,7 +193,7 @@ export const agentKit = inngest.createFunction(
           content: "LLM RESULT",
           role: "ASSISTANT",
           type: "RESULT",
-          fragments: {
+          fragment: {
             create: {
               sandboxUrl: sandboxUrl,
               title: "Fragment",
