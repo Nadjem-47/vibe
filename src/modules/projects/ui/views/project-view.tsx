@@ -1,41 +1,40 @@
 "use client"
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
-import { useTRPC } from '@/trpc/client';
-import { useSuspenseQuery } from '@tanstack/react-query';
-import React, { Suspense } from 'react'
-import { MessagesContainer } from '../components/messages-container';
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable"
+import React, { Suspense, useState } from "react"
+import { MessagesContainer } from "../components/messages-container"
+import { Fragment } from "@/generated/prisma"
+import { ProjectHeader } from "../components/project-header"
 
 interface Props {
-    projectId: string
+  projectId: string
 }
 
 export const ProjectView = ({ projectId }: Props) => {
-    // const trpc = useTRPC()
+  const [activeFragment, setActiveFragment] = useState<Fragment | null>(null)
 
-    // const { data: project } = useSuspenseQuery(trpc.projects.getOne.queryOptions({
-    //     id: projectId
-    // }))
+  return (
+    <div className="h-screen">
+      <ResizablePanelGroup direction="horizontal">
+        <ResizablePanel defaultSize={35} className="flex flex-col min-h-0">
+          <Suspense fallback={<p>Loading messages ...</p>}>
+            <ProjectHeader projectId={projectId} />
+          </Suspense>
 
-    return (
-        <div className='h-screen'>
-
-            <ResizablePanelGroup
-                direction="horizontal"
-            >
-                <ResizablePanel defaultSize={35} className='flex flex-col min-h-0'>
-                    <Suspense fallback={<p>Loading messages ...</p>}>
-                        <MessagesContainer projectId={projectId} />
-                    </Suspense>
-
-                </ResizablePanel>
-                <ResizableHandle />
-                <ResizablePanel defaultSize={65}>
-                    TODO: preview
-                </ResizablePanel>
-            </ResizablePanelGroup>
-
-        </div>
-    )
+          <Suspense fallback={<p>Loading messages ...</p>}>
+            <MessagesContainer
+              projectId={projectId}
+              activeFragment={activeFragment}
+              setActiveFragment={setActiveFragment}
+            />
+          </Suspense>
+        </ResizablePanel>
+        <ResizableHandle />
+        <ResizablePanel defaultSize={65}>TODO: preview</ResizablePanel>
+      </ResizablePanelGroup>
+    </div>
+  )
 }
-
-
