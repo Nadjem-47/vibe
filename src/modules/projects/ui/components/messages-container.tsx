@@ -2,79 +2,16 @@ import { useTRPC } from "@/trpc/client"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import React, { useRef, useEffect } from "react"
 import { MessageCard } from "./message-card"
-import { Fragment, Message } from "@/generated/prisma"
+import { Fragment } from "@/generated/prisma"
 import { MessageForm } from "./message-form"
 import { MessageLoading } from "./message-loading"
+import { mockMessages } from "./mock-data"
 
 interface Props {
   projectId: string
   activeFragment: Fragment | null
   setActiveFragment: React.Dispatch<React.SetStateAction<Fragment | null>>
 }
-
-const mockFragments: Fragment[] = [
-  {
-    id: "f1",
-    messageId: "1",
-    sandboxUrl: "https://chatgpt.com/",
-    title: "Sandbox Example 1",
-    files: { "index.js": "// code here" },
-    createdAt: "2025-10-11T00:00:00.000Z",
-    updatedAt: "2025-10-11T00:00:00.000Z",
-  },
-  {
-    id: "f2",
-    messageId: "3",
-    sandboxUrl: "https://chatgpt.com/",
-    title: "Sandbox Example 3",
-    files: { "main.ts": "// typescript code" },
-    createdAt: "2025-10-11T00:00:00.000Z",
-    updatedAt: "2025-10-11T00:00:00.000Z",
-  },
-]
-
-const mockMessages: (Message & { fragment: Fragment | null })[] = [
-  {
-    id: "1",
-    content: "Hello, how can I help you?",
-    role: "ASSISTANT",
-    fragment: mockFragments[0],
-    createdAt: "2025-10-11T00:00:00.000Z",
-    updatedAt: "2025-10-11T00:00:00.000Z",
-    type: "RESULT",
-    projectId: "p1",
-  },
-  {
-    id: "2",
-    content: "I need help with my Next.js app.",
-    role: "USER",
-    fragment: null,
-    createdAt: "2025-10-11T00:00:00.000Z",
-    updatedAt: "2025-10-11T00:00:00.000Z",
-    type: "RESULT",
-    projectId: "p1",
-  },
-  {
-    id: "3",
-    content: "Sure! What issue are you facing?",
-    role: "ASSISTANT",
-    fragment: mockFragments[1],
-    createdAt: "2025-10-11T00:00:00.000Z",
-    updatedAt: "2025-10-11T00:00:00.000Z",
-    type: "RESULT",
-    projectId: "p1",
-  },
-  {
-    id: "4",
-    content: "This is error",
-    role: "ASSISTANT",
-    fragment: null,
-    createdAt: "2025-10-11T00:00:00.000Z",
-    updatedAt: "2025-10-11T00:00:00.000Z",
-    type: "ERROR",
-    projectId: "p1",
-  },
-];
 
 export const MessagesContainer = ({
   projectId,
