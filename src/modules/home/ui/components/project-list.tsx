@@ -1,38 +1,17 @@
 "use client"
 
-import React, { useState } from "react"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import TextareaAutosize from "react-textarea-autosize"
-import z from "zod"
-import { toast } from "sonner"
-import { ArrowUpIcon, Loader2Icon } from "lucide-react"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import React from "react"
 import { useTRPC } from "@/trpc/client"
 import { Button } from "@/components/ui/button"
-import { Form, FormField } from "@/components/ui/form"
-import { cn } from "@/lib/utils"
-import { useRouter } from "next/navigation"
-import { PROJECT_TEMPLATES } from "./constants"
 import Link from "next/link"
 import { formatDistanceToNow } from "date-fns"
 import Image from "next/image"
+import { useQuery } from "@tanstack/react-query"
 
-const schema = z.object({
-  value: z
-    .string()
-    .min(1, { message: "Message cannot be empty" })
-    .max(1000, { message: "Prompt is too long" }),
-})
+
 
 export const ProjectsList = () => {
   const trpc = useTRPC()
-  const router = useRouter()
-
-  const form = useForm({
-    resolver: zodResolver(schema),
-    defaultValues: { value: "" },
-  })
 
   const { data: projects } = useQuery(trpc.projects.getMany.queryOptions())
 
@@ -57,7 +36,7 @@ export const ProjectsList = () => {
                   className="font-normal h-auto justify-start w-full text-start p-4"
                   asChild
                 >
-                  <Link href={`/project/${project.id}`}>
+                  <Link href={`/projects/${project.id}`}>
                     <div className="flex items-center gap-x-4">
                       <Image
                         src="/logo.svg"
