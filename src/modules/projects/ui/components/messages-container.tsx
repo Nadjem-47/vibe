@@ -20,6 +20,7 @@ export const MessagesContainer = ({
 }: Props) => {
   const trpc = useTRPC()
   const bottomRef = useRef<HTMLDivElement>(null)
+  const lastAssistantMessageIDRef = useRef<string>(null)
 
   const { data: messages } = useSuspenseQuery(
     trpc.messages.getMany.queryOptions(
@@ -34,18 +35,19 @@ export const MessagesContainer = ({
   )
 
   useEffect(() => {
-    const lastAssistantMessageWithFragment = mockMessages.findLast(
+    const lastAssistantMessage = mockMessages.findLast(
       (m) => m.role === "ASSISTANT" && !!m.fragment
     )
     console.log(
-      lastAssistantMessageWithFragment,
+      lastAssistantMessage,
       "lastAssistantMessageWithFragment"
     )
 
-    if (lastAssistantMessageWithFragment) {
-      setActiveFragment(lastAssistantMessageWithFragment.fragment)
+    if (lastAssistantMessage && lastAssistantMessage.id !== lastAssistantMessageIDRef.current) {
+      setActiveFragment(lastAssistantMessage.fragment)
+      lastAssistantMessageIDRef.current = lastAssistantMessage.id
     }
-  }, [setActiveFragment])
+  }, [messages, setActiveFragment])
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView()
