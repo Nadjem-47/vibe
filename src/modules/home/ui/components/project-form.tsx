@@ -14,6 +14,7 @@ import { Form, FormField } from "@/components/ui/form"
 import { cn } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 import { PROJECT_TEMPLATES } from "./constants"
+import { useClerk } from "@clerk/nextjs"
 
 const schema = z.object({
   value: z
@@ -29,7 +30,7 @@ export const ProjectForm = () => {
   const [isLoading, setIsLoading] = useState(false)
 
   const trpc = useTRPC()
-
+  const clerck = useClerk()
   const form = useForm({
     resolver: zodResolver(schema),
     defaultValues: { value: "" },
@@ -45,7 +46,11 @@ export const ProjectForm = () => {
 
         router.push(`/projects/${data.id}`)
       },
-      onError: (err) => toast.error(err.message),
+      onError: (err) =>{
+        if (err.data?.code === "UNAUTHORIZED") {
+         clerck.openSignIn()
+        }
+      },
       onSettled: () => setIsLoading(false),
     })
   )

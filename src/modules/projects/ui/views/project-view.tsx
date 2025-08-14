@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { CodeView } from "@/components/code-view"
 import { FileCollection, FileExplorer } from "@/components/file-explorer"
+import { UserButton } from "@clerk/nextjs"
 
 interface Props {
   projectId: string
@@ -64,6 +65,8 @@ export const ProjectView = ({ projectId }: Props) => {
                     <CrownIcon /> Upgrade
                   </Link>
                 </Button>
+
+                <UserButton />
               </div>
             </div>
 
