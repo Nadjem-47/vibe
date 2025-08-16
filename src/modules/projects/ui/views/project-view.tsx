@@ -1,4 +1,5 @@
 "use client"
+
 import {
   ResizableHandle,
   ResizablePanel,
@@ -13,9 +14,8 @@ import { Tabs, TabsList, TabsContent, TabsTrigger } from "@/components/ui/tabs"
 import { CodeIcon, CrownIcon, EyeIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { CodeView } from "@/components/code-view"
 import { FileCollection, FileExplorer } from "@/components/file-explorer"
-import { UserButton } from "@clerk/nextjs"
+import { useAuth, UserButton } from "@clerk/nextjs"
 
 interface Props {
   projectId: string
@@ -24,6 +24,9 @@ interface Props {
 export const ProjectView = ({ projectId }: Props) => {
   const [activeFragment, setActiveFragment] = useState<Fragment | null>(null)
   const [tabsState, setTabState] = useState<"preview" | "code">("preview")
+
+  const { has } = useAuth()
+  const hasProAccess = has?.({ plan: "pro" })
 
   return (
     <div className="h-screen">
@@ -60,11 +63,13 @@ export const ProjectView = ({ projectId }: Props) => {
                 </TabsTrigger>
               </TabsList>
               <div className="ml-auto flex items-center gap-x-2">
-                <Button asChild size="sm" variant="default">
-                  <Link href="/pricing">
-                    <CrownIcon /> Upgrade
-                  </Link>
-                </Button>
+                {!hasProAccess && (
+                  <Button asChild size="sm" variant="default">
+                    <Link href="/pricing">
+                      <CrownIcon /> Upgrade
+                    </Link>
+                  </Button>
+                )}
 
                 <UserButton />
               </div>
@@ -75,7 +80,9 @@ export const ProjectView = ({ projectId }: Props) => {
             </TabsContent>
 
             <TabsContent value="code" className="min-h-0">
-              {!!activeFragment?.files && <FileExplorer files={activeFragment.files as FileCollection} />}
+              {!!activeFragment?.files && (
+                <FileExplorer files={activeFragment.files as FileCollection} />
+              )}
             </TabsContent>
           </Tabs>
         </ResizablePanel>

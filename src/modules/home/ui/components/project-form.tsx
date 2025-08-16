@@ -43,12 +43,18 @@ export const ProjectForm = () => {
       onMutate: () => setIsLoading(true),
       onSuccess: (data) => {
         queryClient.invalidateQueries(trpc.projects.getMany.queryOptions())
+        queryClient.invalidateQueries(trpc.usage.status.queryOptions())
 
         router.push(`/projects/${data.id}`)
       },
-      onError: (err) =>{
+      onError: (err) => {
         if (err.data?.code === "UNAUTHORIZED") {
-         clerck.openSignIn()
+          clerck.openSignIn()
+        }
+
+
+        if (err.data?.code === "TOO_MANY_REQUESTS") {
+          router.push("/pricing")
         }
       },
       onSettled: () => setIsLoading(false),
