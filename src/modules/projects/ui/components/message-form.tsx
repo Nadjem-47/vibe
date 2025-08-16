@@ -8,11 +8,13 @@ import TextareaAutosize from "react-textarea-autosize"
 import z from "zod";
 import { toast } from "sonner";
 import { ArrowUpIcon, Loader2Icon } from "lucide-react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
 import { Button } from "@/components/ui/button";
 import { Form, FormField } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
+import { Usage } from "./usage";
+import { useRouter } from "next/router";
 
 interface MessageFormProps {
     projectId: string;
@@ -28,9 +30,11 @@ export const MessageForm = ({ projectId }: MessageFormProps) => {
     const [isFocused, setIsFocused] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    const showUsage = false;
-
     const trpc = useTRPC();
+    const {data: usage} = useQuery(trpc.usage.status.queryOptions())
+const router = useRouter();
+    
+    const showUsage = !!usage;
 
     const form = useForm({
         resolver: zodResolver(schema),
@@ -45,7 +49,13 @@ export const MessageForm = ({ projectId }: MessageFormProps) => {
             form.reset();
             queryClient.invalidateQueries(trpc.messages.getMany.queryOptions({projectId}));
         },
-        onError: (err) => toast.error(err.message),
+        onError: (err) => {
+            toast.error(err.message)
+            if (err.data?.code === "TOO_MANY_REQUESTS") {
+                toast.error("You have run out of credits");
+                router.push("/pricing ");
+            }
+        },
         onSettled: () => setIsLoading(false),
     }));
 
@@ -58,6 +68,9 @@ export const MessageForm = ({ projectId }: MessageFormProps) => {
 
     return (
         <Form {...form} >
+            {showUsage && (
+                <Usage points={usage.remainingPoints} msBeforeNext={usage.msBeforeNext} />
+            )}
             <form onSubmit={onSubmit}
             
             className={
