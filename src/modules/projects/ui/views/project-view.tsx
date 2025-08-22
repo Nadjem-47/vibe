@@ -31,7 +31,7 @@ export const ProjectView = ({ projectId }: Props) => {
   return (
     <div className="h-screen">
       <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel defaultSize={35} className="flex flex-col min-h-0">
+         <ResizablePanel defaultSize={35} className="flex flex-col min-h-0">
           <Suspense fallback={<p>Loading projet ...</p>}>
             <ProjectHeader projectId={projectId} />
           </Suspense>
@@ -42,9 +42,9 @@ export const ProjectView = ({ projectId }: Props) => {
               setActiveFragment={setActiveFragment}
             />
           </Suspense>
-        </ResizablePanel>
+        </ResizablePanel> 
         <ResizableHandle />
-        <ResizablePanel defaultSize={65}>
+       <ResizablePanel defaultSize={65}>
           <Tabs
             className="h-full gap-y-0"
             defaultValue="preview"

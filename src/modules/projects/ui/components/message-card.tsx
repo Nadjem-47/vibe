@@ -37,7 +37,6 @@ const FragmentCard = ({
   >
     <div className="flex items-center justify-between mb-2">
       <p className="font-semibold text-gray-700 dark:text-gray-200 flex items-center gap-2">
-        <div className="w-2 h-2 rounded-full bg-blue-400 dark:bg-blue-400"></div>
         Fragment Preview
       </p>
       <div className="text-xs text-gray-400 group-hover:text-blue-500 dark:text-gray-500 dark:group-hover:text-blue-400 transition-colors">

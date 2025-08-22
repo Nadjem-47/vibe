@@ -28,8 +28,8 @@ export const MessagesContainer = ({
         projectId: projectId,
       },
       {
-         // TODO Temp life message update
-        refetchInterval: 500,
+        // TODO Temp life message update
+        //refetchInterval: 500,
       }
     )
   )
@@ -38,12 +38,11 @@ export const MessagesContainer = ({
     const lastAssistantMessage = mockMessages.findLast(
       (m) => m.role === "ASSISTANT" && !!m.fragment
     )
-    console.log(
-      lastAssistantMessage,
-      "lastAssistantMessageWithFragment"
-    )
 
-    if (lastAssistantMessage && lastAssistantMessage.id !== lastAssistantMessageIDRef.current) {
+    if (
+      lastAssistantMessage &&
+      lastAssistantMessage.id !== lastAssistantMessageIDRef.current
+    ) {
       setActiveFragment(lastAssistantMessage.fragment)
       lastAssistantMessageIDRef.current = lastAssistantMessage.id
     }

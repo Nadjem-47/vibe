@@ -52,7 +52,7 @@ export const Navbar = () => {
                       className="flex items-center gap-3 hover:bg-muted rounded-md p-2 transition-colors"
                     >
                       <Image
-                        src={`/logo/${project.id}.png`}
+                        src={`/logo/${project.id}.svg`}
                         alt={`${project.name} logo`}
                         width={24}
                         height={24}
