@@ -7,6 +7,7 @@ import z from "zod";
 import { generateSlug } from "random-word-slugs";
 import { TRPCError } from "@trpc/server";
 import { consumeCredits } from "@/lib/usage";
+import { RateLimiterRes } from "rate-limiter-flexible";
 
 export const projectsRouter = createTRPCRouter({
     getOne: protectedProcedure
@@ -57,15 +58,21 @@ export const projectsRouter = createTRPCRouter({
             });
 
 
+
             try {
                 await consumeCredits();
             } catch (error) {
-                if (error instanceof Error) {
-                    throw new TRPCError({ code: "BAD_REQUEST", message: "Somethig went wrong" });
-                } else {
+                if (error instanceof RateLimiterRes) {
+                    // This means the user has exceeded their credits
                     throw new TRPCError({ code: "TOO_MANY_REQUESTS", message: "You have run out of credits" });
+                } else if (error instanceof Error) {
+                    // Generic error (auth missing, db issues, etc.)
+                    throw new TRPCError({ code: "BAD_REQUEST", message: error.message || "Something went wrong" });
+                } else {
+                    throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Unexpected error" });
                 }
             }
+
 
             /*TODO: ACTIVATE AFTER ACTIVATE ai llm*/
 

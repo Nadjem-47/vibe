@@ -4,7 +4,7 @@ export const mockFragments: Fragment[] = [
   {
     id: "f1",
     messageId: "1",
-    sandboxUrl: "https://chatgpt.com/",
+    sandboxUrl: "https://www.wikipedia.org",
     title: "React Component Example",
     files: { 
       "App.tsx": `import React, { useState } from 'react';
@@ -149,7 +149,7 @@ root.render(
   {
     id: "f2",
     messageId: "3",
-    sandboxUrl: "https://chatgpt.com/",
+    sandboxUrl: "https://www.wikipedia.org",
     title: "Next.js API Example",
     files: { 
       "pages/api/users.ts": `import type { NextApiRequest, NextApiResponse } from 'next';
@@ -401,7 +401,7 @@ export default Home;`,
   {
     id: "f3",
     messageId: "5",
-    sandboxUrl: "https://chatgpt.com/",
+    sandboxUrl: "https://www.wikipedia.org",
     title: "React Hook Example",
     files: { 
       "useCounter.ts": `import { useState, useCallback } from 'react';

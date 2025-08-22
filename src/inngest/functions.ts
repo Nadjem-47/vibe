@@ -204,7 +204,6 @@ export const agentKit = inngest.createFunction(
       })
     })
 
-    console.log(sandboxUrl, "sandboxId")
 
     return {
       url: sandboxUrl,
