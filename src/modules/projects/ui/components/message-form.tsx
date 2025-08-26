@@ -27,18 +27,15 @@ const schema = z.object({
 })
 
 export const MessageForm = ({ projectId }: MessageFormProps) => {
-      const trpc = useTRPC()
+  const trpc = useTRPC()
   const router = useRouter()
 
-    const { data: usage } = useQuery(trpc.usage.status.queryOptions())
+  const { data: usage } = useQuery(trpc.usage.status.queryOptions())
 
   const [isFocused, setIsFocused] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-
-
-  console.log(usage, "USAGE");
-  
+  console.log(usage, "USAGE")
 
   const showUsage = !!usage
 

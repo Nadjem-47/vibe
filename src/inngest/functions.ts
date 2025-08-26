@@ -7,10 +7,11 @@ import {
   createNetwork,
   type Tool,
   createState,
+  Message,
 } from "@inngest/agent-kit"
 
 import { getSandbox, lastAssistantTextMessageContent } from "./utils"
-import z from "zod"
+import { z } from "zod";
 import { FRAGMENT_TITLE_PROMPT, PROMPT, RESPONSE_PROMPT } from "@/propmt"
 import { prisma } from "@/lib/db"
 
@@ -58,7 +59,7 @@ export const agentKit = inngest.createFunction(
         files: {},
       },
       {
-        messages: previousMessages,
+        messages: previousMessages as unknown as Message[],
       }
     )
 
@@ -148,12 +149,12 @@ export const agentKit = inngest.createFunction(
           parameters: z.object({
             paths: z.array(z.string()),
           }),
-          handler: async ({ files }, { step }: Tool.Options<AgentState>) => {
+          handler: async ({ paths }, { step }: Tool.Options<AgentState>) => {
             return await step?.run("read-files", async () => {
               try {
                 const sandbox = await getSandbox(sandboxId)
                 const contents = []
-                for (const path of files) {
+                for (const path of paths) {
                   contents.push({
                     path,
                     content: await sandbox.files.read(path),
