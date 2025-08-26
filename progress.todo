@@ -7,5 +7,12 @@
 07:06:40
 8:42
 9:26
+9:39
 
 After push the sandbox docker image we have to publish it
+
+
+
+ISSUES: 
+
+- Get usage in projects + messages always returns null .
