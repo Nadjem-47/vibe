@@ -26,6 +26,7 @@ export const agentKit = inngest.createFunction(
     const sandboxId = await step.run("get-sandbox-id", async () => {
       // Create a new sandbox
       const sbx = await Sandbox.create("vibe-nextjs-test-NDN")
+
       return sbx.sandboxId
     })
 
@@ -40,6 +41,7 @@ export const agentKit = inngest.createFunction(
           orderBy: {
             createdAt: "desc",
           },
+          take: 5,
         })
 
         return messages.map((message) => ({

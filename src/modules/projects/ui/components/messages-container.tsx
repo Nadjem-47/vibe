@@ -28,8 +28,8 @@ export const MessagesContainer = ({
         projectId: projectId,
       },
       {
-        // TODO Temp life message update
-        //refetchInterval: 500,
+        // TODO can be real time instead of pulling (inngest docs)
+        refetchInterval: 2000,
       }
     )
   )
