@@ -76,13 +76,13 @@ export const projectsRouter = createTRPCRouter({
 
             /*TODO: ACTIVATE AFTER ACTIVATE ai llm*/
 
-            // await inngest.send({
-            //     name: "ai/prompt",
-            //     data: {
-            //         value: input.value,
-            //         projectId: createProject.id,
-            //     },
-            // })
+             await inngest.send({
+                 name: "ai/prompt",
+                 data: {
+                     value: input.value,
+                     projectId: createProject.id,
+                 },
+             })
 
             return createProject;
         }),
