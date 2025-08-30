@@ -11,7 +11,7 @@ import {
 } from "@inngest/agent-kit"
 
 import { getSandbox, lastAssistantTextMessageContent } from "./utils"
-import { z } from "zod";
+import { z } from "zod"
 import { FRAGMENT_TITLE_PROMPT, PROMPT, RESPONSE_PROMPT } from "@/propmt"
 import { prisma } from "@/lib/db"
 
@@ -24,10 +24,9 @@ export const agentKit = inngest.createFunction(
   { id: "ai-prompt" },
   { event: "ai/prompt" },
   async ({ event, step }) => {
-    const sandboxId = await step.run("get-sandbox-id", async () => {
-      // Create a new sandbox
-      const sbx = await Sandbox.create("vibe-nextjs-test-NDN")
 
+    const sandboxId = await step.run("get-sandbox-id", async () => {
+      const sbx = await Sandbox.create("vibe-nextjs-test-NDN")
       return sbx.sandboxId
     })
 
@@ -63,7 +62,6 @@ export const agentKit = inngest.createFunction(
       }
     )
 
-    /*TODO: activate this after we pay to the AI agent */
     const codeAgent = createAgent<AgentState>({
       name: "code-agent",
       description: "An expert coding agent",
@@ -208,16 +206,16 @@ export const agentKit = inngest.createFunction(
       description: "A fragment title generator",
       system: FRAGMENT_TITLE_PROMPT,
       model: openai({
-        model: "gpt-4.0",
+        model: "o3-mini",
       }),
     })
 
     const responseGenerator = createAgent<AgentState>({
-      name: "fragment-title-generator",
-      description: "A fragment title generator",
+      name: "fragment-response-generator",
+      description: "A fragment response generator",
       system: RESPONSE_PROMPT,
       model: openai({
-        model: "gpt-4.0",
+        model: "o3-mini",
       }),
     })
 

@@ -63,10 +63,8 @@ export const projectsRouter = createTRPCRouter({
                 await consumeCredits();
             } catch (error) {
                 if (error instanceof RateLimiterRes) {
-                    // This means the user has exceeded their credits
                     throw new TRPCError({ code: "TOO_MANY_REQUESTS", message: "You have run out of credits" });
                 } else if (error instanceof Error) {
-                    // Generic error (auth missing, db issues, etc.)
                     throw new TRPCError({ code: "BAD_REQUEST", message: error.message || "Something went wrong" });
                 } else {
                     throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Unexpected error" });
@@ -74,7 +72,6 @@ export const projectsRouter = createTRPCRouter({
             }
 
 
-            /*TODO: ACTIVATE AFTER ACTIVATE ai llm*/
 
              await inngest.send({
                  name: "ai/prompt",
