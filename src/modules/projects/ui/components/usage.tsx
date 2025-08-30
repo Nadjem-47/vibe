@@ -7,29 +7,29 @@ import { useMemo } from "react"
 
 interface Props {
   points: number
-  msBeforeNext: number
+  // msBeforeNext: number
 }
 
-export const Usage = ({ points, msBeforeNext }: Props) => {
+export const Usage = ({ points }: Props) => {
   const { has } = useAuth()
   const hasProAccess = has?.({ plan: "pro" })
 
-  const resetTime = useMemo(() => {
-    try {
-      return formatDuration(
-        intervalToDuration({
-          start: new Date(),
-          end: new Date(Date.now() + msBeforeNext),
-        }),
-        {
-          format: ["months", "days", "hours"],
-        }
-      )
-    } catch (error) {
-      console.error(error, "Error formatting duration")
-      return "soon"
-    }
-  }, [msBeforeNext])
+  // const resetTime = useMemo(() => {
+  //   try {
+  //     return formatDuration(
+  //       intervalToDuration({
+  //         start: new Date(),
+  //         end: new Date(Date.now() + msBeforeNext),
+  //       }),
+  //       {
+  //         format: ["months", "days", "hours"],
+  //       }
+  //     )
+  //   } catch (error) {
+  //     console.error(error, "Error formatting duration")
+  //     return "soon"
+  //   }
+  // }, [msBeforeNext])
 
   return (
     <div className="rounded-t-xl bg-background border border-b-0 p-2.5">
@@ -39,7 +39,7 @@ export const Usage = ({ points, msBeforeNext }: Props) => {
             {points} {hasProAccess ? "Pro" : "Free"} credits remaining
           </p>
 
-          <p className="text-xs text-muted-foreground">Resets in {resetTime}</p>
+          {/* <p className="text-xs text-muted-foreground">Resets in {resetTime}</p> */}
         </div>
 
         {!hasProAccess && (

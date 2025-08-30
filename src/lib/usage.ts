@@ -3,48 +3,58 @@ import { prisma } from "./db"
 import { auth } from "@clerk/nextjs/server"
 
 const GENERATION_COST = 1
-const PRO_POINTS = 100
-const FREE_POINTS = 10
+const PRO_POINTS = 50
+const FREE_POINTS = 3
 
 export async function getUsageTracker() {
-    const { has } = await auth()
-    const hasProAccess = has?.({ plan: "pro" })
+  const { has } = await auth()
+  const hasProAccess = has?.({ plan: "pro" })
 
-    const usageTracker = new RateLimiterPrisma({
-        storeClient: prisma,
-        tableName: "Usage",
-        keyPrefix: "rateLimiter",
-        points: hasProAccess ? PRO_POINTS : FREE_POINTS,
-        duration: 30 * 24 * 60 * 60, // 30 days
-    })
+  const usageTracker = new RateLimiterPrisma({
+    storeClient: prisma,
+    tableName: "Usage",
+    keyPrefix: "rateLimiter",
+    points: hasProAccess ? PRO_POINTS : FREE_POINTS,
+    duration: 30 * 24 * 60 * 60,
+  })
 
-    return usageTracker
+  return usageTracker
 }
 
 export async function consumeCredits() {
-    const { userId } = await auth()
-    if (!userId) throw new Error("User not authenticated")
+  const { userId } = await auth()
+  if (!userId) throw new Error("User not authenticated")
 
-    try {
-        const usageTracker = await getUsageTracker()
-        const result = await usageTracker.consume(userId, GENERATION_COST)
-        return result
-    } catch (error) {
+  try {
+    const usageTracker = await getUsageTracker()
+    const result = await usageTracker.consume(userId, GENERATION_COST)
 
-        console.log("ERROR getUsageTracker", error);
-
-
-    }
-
+    return result
+  } catch (error) {
+    console.error("ERROR consumeCredits", error)
+    throw error 
+  }
 }
 
+
+
 export async function getUsageStatus() {
-    const { userId } = await auth()
+  const { userId } = await auth()
+  if (!userId) throw new Error("User not authenticated")
 
-    if (!userId) throw new Error("User not authenticated")
+  const usageTracker = await getUsageTracker()
 
-    const usageTracker = await getUsageTracker()
+  const record = await prisma.usage.findUnique({
+    where: { key: `rateLimiter:${userId}` },
+  })
 
-    const usage = await usageTracker.get(userId)
-    return usage
+  const consumedPoints = record?.points ?? 0
+  const remainingPoints = usageTracker.points - consumedPoints
+
+  return {
+    remainingPoints,
+    consumedPoints,
+    msBeforeNext: 0,
+    resetAt: record?.expire ? new Date(record.expire) : null,
+  }
 }

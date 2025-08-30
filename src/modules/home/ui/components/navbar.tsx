@@ -32,17 +32,8 @@ export const Navbar = () => {
 
       {/* Center: Links */}
       <div className="hidden sm:flex items-center gap-6">
-        <Link href="/" className="hover:text-blue-500 transition-colors">
-          Home
-        </Link>
-        <Link href="/projects" className="hover:text-blue-500 transition-colors">
-          Projects
-        </Link>
         {projects && projects.length > 0 && (
           <div className="relative group">
-            <button className="hover:text-blue-500 transition-colors">
-              Recent
-            </button>
             <div className="absolute left-0 top-full mt-2 hidden group-hover:block bg-white dark:bg-sidebar border rounded-lg shadow-lg w-64 p-2 z-50">
               <ul className="space-y-2">
                 {projects.slice(0, 5).map((project) => (

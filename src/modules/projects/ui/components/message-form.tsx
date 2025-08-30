@@ -35,7 +35,6 @@ export const MessageForm = ({ projectId }: MessageFormProps) => {
   const [isFocused, setIsFocused] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  console.log(usage, "USAGE")
 
   const showUsage = !!usage
 
@@ -54,6 +53,8 @@ export const MessageForm = ({ projectId }: MessageFormProps) => {
         queryClient.invalidateQueries(
           trpc.messages.getMany.queryOptions({ projectId })
         )
+
+        queryClient.invalidateQueries(trpc.usage.status.queryOptions())
       },
       onError: (err) => {
         toast.error(err.message)
@@ -66,7 +67,7 @@ export const MessageForm = ({ projectId }: MessageFormProps) => {
     })
   )
 
-  const isPending = createMessage.isPending
+  const isPending = createMessage.isPending 
   const isDisabled = isPending || !form.formState.isValid
 
   const onSubmit = form.handleSubmit((values) => {
@@ -78,7 +79,6 @@ export const MessageForm = ({ projectId }: MessageFormProps) => {
       {showUsage && (
         <Usage
           points={usage.remainingPoints}
-          msBeforeNext={usage.msBeforeNext}
         />
       )}
       <form
@@ -129,7 +129,7 @@ export const MessageForm = ({ projectId }: MessageFormProps) => {
               isDisabled && "bg-muted-foreground border"
             )}
           >
-            {isPending ? (
+            {isLoading ? (
               <Loader2Icon className="size-4 animate-spin" />
             ) : (
               <ArrowUpIcon />

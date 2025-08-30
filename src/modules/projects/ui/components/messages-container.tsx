@@ -5,7 +5,6 @@ import { MessageCard } from "./message-card"
 import { Fragment } from "@/generated/prisma"
 import { MessageForm } from "./message-form"
 import { MessageLoading } from "./message-loading"
-import { mockMessages } from "./mock-data"
 
 interface Props {
   projectId: string
@@ -35,7 +34,7 @@ export const MessagesContainer = ({
   )
 
   useEffect(() => {
-    const lastAssistantMessage = mockMessages.findLast(
+    const lastAssistantMessage = messages.findLast(
       (m) => m.role === "ASSISTANT" && !!m.fragment
     )
 
@@ -50,7 +49,7 @@ export const MessagesContainer = ({
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView()
-  }, [mockMessages.length])
+  }, [messages.length])
 
   const lastMessage = messages[messages.length - 1]
   const isLastMessageUser = lastMessage.role === "USER"
@@ -59,7 +58,7 @@ export const MessagesContainer = ({
     <div className="flex flex-col flex-1 min-h-0">
       <div className="flex-1 min-h-0 overflow-y-auto">
         <div className="pt-2 pr-1 gap-2">
-          {mockMessages.map((m) => {
+          {messages.map((m) => {
             return (
               <MessageCard
                 key={m.id}
